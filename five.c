@@ -59,7 +59,7 @@ int dequeue(q* ptr){
         ptr->rear = -1;
     }
     else if(ptr->front == ptr->maxsize-1) ptr->front=0;
-    else ptr->front = 0;
+    else ptr->front++;
     printf("We removed %d from front.\n", item);
     return item;
 }
@@ -67,13 +67,18 @@ int dequeue(q* ptr){
 void display(q* ptr){
     if(underflow(ptr)){
         printf("No element in queue.\n");
-        return ;
+        return;
     }
     printf("The elements are: \t");
-    for(int i = ptr->front;i<=ptr->rear;i++){
-        printf("%d ",ptr->a[i]);
-    }
+    if(ptr->front<=ptr->rear){
+    for(int i = ptr->front;i<=ptr->rear;i++) printf("%d ",ptr->a[i]);
     printf("\n");
+    }
+    else if(ptr->front>ptr->rear){
+        for(int i = ptr->front;i<=ptr->maxsize-1;i++) printf("%d ",ptr->a[i]);
+        for(int i=0;i<=ptr->rear;i++) printf("%d ",ptr->a[i]);
+        printf("\n");
+    }
 }
 
 
@@ -98,7 +103,10 @@ int main(){
                 dequeue(&myqueue);
             break;
             case 3:
-                if(myqueue.front!=-1) printf("Currently %d elements in queue.\n", myqueue.rear-myqueue.front+1);
+                if(myqueue.front!=-1) {
+                    if(myqueue.rear>=myqueue.front) printf("Currently %d elements in queue.\n", myqueue.rear-myqueue.front+1);
+                    else printf("Currently %d elements in queue.\n", myqueue.rear+1+(myqueue.maxsize-myqueue.front));
+                }
                 display(&myqueue);
             break;
             case 4:
